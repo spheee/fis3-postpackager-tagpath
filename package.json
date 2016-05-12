@@ -1,0 +1,14 @@
+{
+  "name": "fis3-postpackager-tagpath",
+  "version": "1.0.0",
+  "description": "a plugin to help fis3 deal with the href using relative path or src dynamicaly generated ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "fis3"
+  ],
+  "author": "holmesky <habxp@163.com> (finalhsky.com)",
+  "license": "ISC"
+}
