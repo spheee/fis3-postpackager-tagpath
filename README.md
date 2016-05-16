@@ -8,5 +8,5 @@
     postpackager : fis.plugin('tagpath',{ domain:'/AsYouWish'})
 ```
 
-### v1.1.0
+### v1.1.1
  新增了处理模板js中拼接img标签的处理，解决无法使用__uri的情况
