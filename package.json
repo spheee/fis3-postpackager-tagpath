@@ -1,6 +1,6 @@
 {
   "name": "fis3-postpackager-tagpath",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "a plugin to help fis3 deal with the href using relative path or src dynamicaly generated ",
   "main": "index.js",
   "scripts": {
@@ -10,5 +10,9 @@
     "fis3"
   ],
   "author": "holmesky <habxp@163.com> (finalhsky.com)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spheee/fis3-postpackager-tagpath.git"
+  },
   "license": "ISC"
 }

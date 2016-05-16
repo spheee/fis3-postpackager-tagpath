@@ -8,23 +8,50 @@ module.exports = function(ret, conf, settings, opt) {
 
     //替换a标签和css或者js中的资源
     var tagReg = [/<a[^>]+href=([^>]+)>/gi, /<link[^>]+href=([^>]+)>/gi, /<script[^>]+src=([^>]+)>/gi, /<img[^>]+src=([^>]+)>/gi];
-
     var aTagReg = /<a[^>]+href=([^>]+)>/gi;
+    var imgTagReg = /<img[^>]+src=([^>]+)>/gi;
+    var speTag = /#|http|(javascript:[;|(void(0)])/;
+
     //重组打包对象
     var map = {};
-    fis.util.map(ret.src, function(subpath, file) {
+    // fis.util.map(ret.src, function(subpath, file) {
 
-        if (!file.isHtmlLike && file.ext != ".tmpl") {
+    //     if (!file.isHtmlLike && file.ext != ".tmpl") {
 
-            map[subpath.replace("/src/", "")] = file.getUrl(opt.hash, opt.domain);
-        }
-        // console.log('\n'+subpath+' === '+file.getUrl())
-    });
+    //         map[subpath.replace("/src/", "")] = file.getUrl(opt.hash, opt.domain);
+    //     }
+    //     // console.log('\n'+subpath+' === '+file.getUrl())
+    // });
 
     //concat
     fis.util.map(ret.src, function(subpath, file) {
 
         //html类文件，才需要做替换
+        if (file.isJsLike) {
+            var content = file.getContent();
+            content = content.replace(aTagReg, function(tag, url) {
+                if (speTag.test(url)) {
+                    return tag;
+                }
+                if (settings && settings.domain) {
+                    url = url.replace(/"|'/g, "");
+                    console.log(url)
+                    return tag.replace(url, settings.domain + url)
+                }
+
+            })
+            content = content.replace(imgTagReg, function(tag, url) {
+                if (settings && settings.domain) {
+                    url = url.replace(/"|'/g, "");
+                    console.log(url)
+                    return tag.replace(url, settings.domain + url)
+                }
+
+            })
+
+            file.setContent(content);
+        }
+
         if (file.isHtmlLike) {
             var content = file.getContent();
 
@@ -52,23 +79,15 @@ module.exports = function(ret, conf, settings, opt) {
 
             // }
             //不行啊 这里还要去除javascript:; http://
-            var speTag = /http|(javascript:[;|(void(0)])/;
             content = content.replace(aTagReg, function(tag, url) {
-                console.log('\n' + url)
                 if (speTag.test(url)) {
-                    console.log(url)
                     return tag;
                 }
-
                 if (settings && settings.domain) {
                     url = url.replace(/"|'/g, "");
-
-
                     return tag.replace(url, settings.domain + url)
                 }
-
             })
-
             file.setContent(content);
         }
     });
